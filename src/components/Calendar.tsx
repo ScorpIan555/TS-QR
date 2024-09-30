@@ -2,10 +2,10 @@
 // components/Calendar.tsx
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import QRCode from 'react-qr-code'; // Use react-qr-code instead
+// import QRCode from 'react-qr-code'; // Use react-qr-code instead
 import 'react-datepicker/dist/react-datepicker.css';
 
-import qrcodegen from '../third-party/qrcodegen';
+// import qrcodegen from '../third-party/qrcodegen';
 
 const Calendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -20,7 +20,7 @@ const Calendar: React.FC = () => {
       setShowQRCode(true);
       alert(encodedData);
       console.log('encodedData::: ', encodedData);
-      console.log('encodedData::: ', encodedData);
+      console.log('showQRCode, qrCodeValue::: ', showQRCode, qrCodeValue);
     }
   };
 

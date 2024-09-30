@@ -20,6 +20,7 @@ const Calendar: React.FC = () => {
       setShowQRCode(true);
       alert(encodedData);
       console.log('encodedData::: ', encodedData);
+      console.log('encodedData::: ', encodedData);
     }
   };
 

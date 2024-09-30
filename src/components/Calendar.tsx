@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker';
 import QRCode from 'react-qr-code'; // Use react-qr-code instead
 import 'react-datepicker/dist/react-datepicker.css';
 
+import qrcodegen from '../third-party/qrcodegen';
+
 const Calendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showQRCode, setShowQRCode] = useState<boolean>(false);
@@ -16,6 +18,8 @@ const Calendar: React.FC = () => {
       const encodedData = `data:text/calendar;base64,${btoa(calendarInvite)}`;
       setQrCodeValue(encodedData);
       setShowQRCode(true);
+      alert(encodedData);
+      console.log('encodedData::: ', encodedData);
     }
   };
 
@@ -68,12 +72,18 @@ END:VCALENDAR
         Generate QR Code
       </button>
 
-      {showQRCode && qrCodeValue && (
+      {/* {showQRCode && qrCodeValue && (
+        <div className="mt-6 flex flex-col items-center">
+          <div id="qr-code"> </div>
+          <p>Scan the QR code to add the event to your calendar.</p>
+        </div>
+      )} */}
+      {/* {showQRCode && qrCodeValue && (
         <div className="mt-6 flex flex-col items-center">
           <QRCode value={qrCodeValue} className="mb-4" />
           <p>Scan the QR code to add the event to your calendar.</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

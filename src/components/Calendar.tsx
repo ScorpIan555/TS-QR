@@ -46,7 +46,6 @@ const Calendar: React.FC = () => {
       setQrCodeValue(calendarInvite);
 
       setShowQRCode(true);
-      alert(calendarInvite);
       console.log("calendarInvite::: ", calendarInvite);
       console.log('calendar invite end')
       console.log( calendarInvite);
@@ -75,7 +74,7 @@ VERSION:2.0
 BEGIN:VEVENT
 DTSTART:${startDate}
 DTEND:${endDate}
-SUMMARY:Your Event Name
+SUMMARY:Free, No Obligation Consultation with Trinity Solar
 DESCRIPTION:Event description here
 LOCATION:Your event location
 END:VEVENT

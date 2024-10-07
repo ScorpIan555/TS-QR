@@ -1,28 +1,69 @@
-'use client'
+"use client";
 // components/Calendar.tsx
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 // import QRCode from 'react-qr-code'; // Use react-qr-code instead
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
+// import QRCode from "./QRCode";
 
-// import qrcodegen from '../third-party/qrcodegen';
+// import { QrCode } from "@/third-party/qrcodegen/";
+// import * as QRCodeGen from "@/third-party/qrcodegen/index"
+import { qrcodegen } from "@/third-party/qrcodegen/index";
+
+// Returns a string of SVG code for an image depicting the given QR Code, with the given number
+// of border modules. The string always uses Unix newlines (\n), regardless of the platform.
 
 const Calendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showQRCode, setShowQRCode] = useState<boolean>(false);
-  const [qrCodeValue, setQrCodeValue] = useState<string>('');
+  const [qrCodeValue, setQrCodeValue] = useState<string>("");
+  const [qrCodeObjectValue, setQrCodeObjectValue] = useState(Object); // fix this
 
   const handleGenerateQRCode = () => {
     if (selectedDate) {
       const calendarInvite = generateICSFile(selectedDate);
-      const encodedData = `data:text/calendar;base64,${btoa(calendarInvite)}`;
-      setQrCodeValue(encodedData);
+      // Wrap the ICS data in a `data:text/calendar` URI
+      // const dataUri = `data:text/calendar;charset=utf-8,${encodeURIComponent(
+      //   calendarInvite
+      // )}`;
+
+      /* 
+        Look at what tpe of data the calendar is passing it, and choose the correct method, "encode..." 
+
+        S/b able to encode text here.
+
+        Look at line 262: https://github.com/zpao/qrcode.react/blob/trunk/src/index.tsx
+
+        490 starts the SVG code, maybe we can inject the encoded data into that?
+
+      */
+
+      const qrCode = qrcodegen.QrCode.encodeText(
+        calendarInvite,
+        qrcodegen.QrCode.Ecc.MEDIUM
+      );
+
+      setQrCodeValue(calendarInvite);
+
       setShowQRCode(true);
-      alert(encodedData);
-      console.log('encodedData::: ', encodedData);
-      console.log('showQRCode, qrCodeValue::: ', showQRCode, qrCodeValue);
+      alert(calendarInvite);
+      console.log("calendarInvite::: ", calendarInvite);
+      console.log('calendar invite end')
+      console.log( calendarInvite);
+
+      console.log("qrCode::: ", qrCode);
+      setQrCodeObjectValue(qrCode);
+      return qrCode;
     }
+
+    /* 
+      insert error handling here
+    */
   };
+
+  useEffect(() => {
+    console.log("showQRCode1, qrCodeValue1::: ", showQRCode, qrCodeValue);
+  });
 
   const generateICSFile = (date: Date): string => {
     const startDate = formatDateToICS(date);
@@ -41,17 +82,18 @@ END:VEVENT
 END:VCALENDAR
     `.trim();
 
-    console.log('icsData:::', icsData)
+    console.log("icsData:::", icsData);
+
     return icsData;
   };
 
   const formatDateToICS = (date: Date): string => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = '00';
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = "00";
 
     return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
   };
@@ -73,12 +115,36 @@ END:VCALENDAR
         Generate QR Code
       </button>
 
-      {/* {showQRCode && qrCodeValue && (
+      {showQRCode && qrCodeValue && (
         <div className="mt-6 flex flex-col items-center">
           <div id="qr-code"> </div>
           <p>Scan the QR code to add the event to your calendar.</p>
+          {/* <QRCode value={qrCodeValue} /> */}
+          <svg
+            width={"300px"}
+            height={"300px"}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox={`0 0 ${65} ${65}`}
+          >
+            {qrCodeObjectValue?.modules.map((row, rowIndex) =>
+              row.map((module, colIndex) =>
+                module ? (
+                  <rect
+                    key={`${rowIndex}-${colIndex}`}
+                    // x={colIndex * moduleSize}
+                    // y={rowIndex * moduleSize}
+                    x={(colIndex * 65) / qrCodeObjectValue?.size}
+                    y={(rowIndex * 65) / qrCodeObjectValue?.size}
+                    width={65 / qrCodeObjectValue?.size}
+                    height={65 / qrCodeObjectValue?.size}
+                    fill="black"
+                  />
+                ) : null
+              )
+            )}
+          </svg>
         </div>
-      )} */}
+      )}
       {/* {showQRCode && qrCodeValue && (
         <div className="mt-6 flex flex-col items-center">
           <QRCode value={qrCodeValue} className="mb-4" />

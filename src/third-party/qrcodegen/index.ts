@@ -116,7 +116,7 @@ export namespace qrcodegen {
 			}
 			
 			// Concatenate all segments to create the data bit string
-			let bb: Array<bit> = []
+			const bb: Array<bit> = []
 			for (const seg of segs) {
 				appendBits(seg.mode.modeBits, 4, bb);
 				appendBits(seg.numChars, seg.mode.numCharCountBits(version), bb);
@@ -137,7 +137,7 @@ export namespace qrcodegen {
 				appendBits(padByte, 8, bb);
 			
 			// Pack bits into bytes in big endian
-			let dataCodewords: Array<byte> = [];
+			const dataCodewords: Array<byte> = [];
 			while (dataCodewords.length * 8 < bb.length)
 				dataCodewords.push(0);
 			bb.forEach((b: bit, i: int) =>
@@ -193,7 +193,7 @@ export namespace qrcodegen {
 			this.size = version * 4 + 17;
 			
 			// Initialize both grids to be size*size arrays of Boolean false
-			let row: Array<boolean> = [];
+			const row: Array<boolean> = [];
 			for (let i = 0; i < this.size; i++)
 				row.push(false);
 			for (let i = 0; i < this.size; i++) {
@@ -375,10 +375,10 @@ export namespace qrcodegen {
 			const shortBlockLen: int = Math.floor(rawCodewords / numBlocks);
 			
 			// Split data into blocks and append ECC to each block
-			let blocks: Array<Array<byte>> = [];
+			const blocks: Array<Array<byte>> = [];
 			const rsDiv: Array<byte> = QrCode.reedSolomonComputeDivisor(blockEccLen);
 			for (let i = 0, k = 0; i < numBlocks; i++) {
-				let dat: Array<byte> = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
+				const dat: Array<byte> = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
 				k += dat.length;
 				const ecc: Array<byte> = QrCode.reedSolomonComputeRemainder(dat, rsDiv);
 				if (i < numShortBlocks)
@@ -387,7 +387,7 @@ export namespace qrcodegen {
 			}
 			
 			// Interleave (not concatenate) the bytes from every block into a single sequence
-			let result: Array<byte> = [];
+			const result: Array<byte> = [];
 			for (let i = 0; i < blocks[0].length; i++) {
 				blocks.forEach((block, j) => {
 					// Skip the padding byte in short blocks
@@ -466,7 +466,7 @@ export namespace qrcodegen {
 			for (let y = 0; y < this.size; y++) {
 				let runColor = false;
 				let runX = 0;
-				let runHistory = [0,0,0,0,0,0,0];
+				const runHistory = [0,0,0,0,0,0,0];
 				for (let x = 0; x < this.size; x++) {
 					if (this.modules[y][x] == runColor) {
 						runX++;
@@ -488,7 +488,7 @@ export namespace qrcodegen {
 			for (let x = 0; x < this.size; x++) {
 				let runColor = false;
 				let runY = 0;
-				let runHistory = [0,0,0,0,0,0,0];
+				const runHistory = [0,0,0,0,0,0,0];
 				for (let y = 0; y < this.size; y++) {
 					if (this.modules[y][x] == runColor) {
 						runY++;
@@ -544,7 +544,7 @@ export namespace qrcodegen {
 				const numAlign: int = Math.floor(this.version / 7) + 2;
 				const step: int = (this.version == 32) ? 26 :
 					Math.ceil((this.version * 4 + 4) / (numAlign * 2 - 2)) * 2;
-				let result: Array<int> = [6];
+				const result: Array<int> = [6];
 				for (let pos = this.size - 7; result.length < numAlign; pos -= step)
 					result.splice(1, 0, pos);
 				return result;
@@ -587,7 +587,7 @@ export namespace qrcodegen {
 				throw new RangeError("Degree out of range");
 			// Polynomial coefficients are stored from highest to lowest power, excluding the leading term which is always 1.
 			// For example the polynomial x^3 + 255x^2 + 8x + 93 is stored as the uint8 array [255, 8, 93].
-			let result: Array<byte> = [];
+			const result: Array<byte> = [];
 			for (let i = 0; i < degree - 1; i++)
 				result.push(0);
 			result.push(1);  // Start off with the monomial x^0
@@ -611,7 +611,8 @@ export namespace qrcodegen {
 		
 		// Returns the Reed-Solomon error correction codeword for the given data and divisor polynomials.
 		private static reedSolomonComputeRemainder(data: Readonly<Array<byte>>, divisor: Readonly<Array<byte>>): Array<byte> {
-			let result: Array<byte> = divisor.map(_ => 0);
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const result: Array<byte> = divisor.map(_ => 0);
 			for (const b of data) {  // Polynomial division
 				const factor: byte = b ^ (result.shift() as byte);
 				result.push(0);
@@ -749,7 +750,7 @@ export namespace qrcodegen {
 		// byte mode. All input byte arrays are acceptable. Any text string
 		// can be converted to UTF-8 bytes and encoded as a byte mode segment.
 		public static makeBytes(data: Readonly<Array<byte>>): QrSegment {
-			let bb: Array<bit> = []
+			const bb: Array<bit> = []
 			for (const b of data)
 				appendBits(b, 8, bb);
 			return new QrSegment(QrSegment.Mode.BYTE, data.length, bb);
@@ -760,7 +761,7 @@ export namespace qrcodegen {
 		public static makeNumeric(digits: string): QrSegment {
 			if (!QrSegment.isNumeric(digits))
 				throw new RangeError("String contains non-numeric characters");
-			let bb: Array<bit> = []
+			const bb: Array<bit> = []
 			for (let i = 0; i < digits.length; ) {  // Consume up to 3 digits per iteration
 				const n: int = Math.min(digits.length - i, 3);
 				appendBits(parseInt(digits.substring(i, i + n), 10), n * 3 + 1, bb);
@@ -776,7 +777,7 @@ export namespace qrcodegen {
 		public static makeAlphanumeric(text: string): QrSegment {
 			if (!QrSegment.isAlphanumeric(text))
 				throw new RangeError("String contains unencodable characters in alphanumeric mode");
-			let bb: Array<bit> = []
+			const bb: Array<bit> = []
 			let i: int;
 			for (i = 0; i + 2 <= text.length; i += 2) {  // Process groups of 2
 				let temp: int = QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)) * 45;
@@ -807,7 +808,7 @@ export namespace qrcodegen {
 		// Returns a segment representing an Extended Channel Interpretation
 		// (ECI) designator with the given assignment value.
 		public static makeEci(assignVal: int): QrSegment {
-			let bb: Array<bit> = []
+			const bb: Array<bit> = []
 			if (assignVal < 0)
 				throw new RangeError("ECI assignment value out of range");
 			else if (assignVal < (1 << 7))
@@ -887,7 +888,7 @@ export namespace qrcodegen {
 		// Returns a new array of bytes representing the given string encoded in UTF-8.
 		private static toUtf8ByteArray(str: string): Array<byte> {
 			str = encodeURI(str);
-			let result: Array<byte> = [];
+			const result: Array<byte> = [];
 			for (let i = 0; i < str.length; i++) {
 				if (str.charAt(i) != "%")
 					result.push(str.charCodeAt(i));

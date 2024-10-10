@@ -75,8 +75,8 @@ BEGIN:VEVENT
 DTSTART:${startDate}
 DTEND:${endDate}
 SUMMARY:Free, No Obligation Consultation with Trinity Solar
-DESCRIPTION:Event description here
-LOCATION:Your event location
+DESCRIPTION:Whatever you want.  All the text in this section is customizable.
+LOCATION:Put whatever you want here.
 END:VEVENT
 END:VCALENDAR
     `.trim();

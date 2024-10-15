@@ -21,6 +21,7 @@ const Calendar: React.FC = () => {
 
   const handleGenerateQRCode = () => {
     if (selectedDate) {
+      console.log('selectedDate::: ', selectedDate)
       const calendarInvite = generateICSFile(selectedDate);
       // Wrap the ICS data in a `data:text/calendar` URI
       // const dataUri = `data:text/calendar;charset=utf-8,${encodeURIComponent(

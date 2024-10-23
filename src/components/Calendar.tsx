@@ -75,7 +75,7 @@ VERSION:2.0
 BEGIN:VEVENT
 DTSTART:${startDate}
 DTEND:${endDate}
-SUMMARY:Free, No Obligation Consultation with Trinity Solar
+SUMMARY:No Obligation Consultation with Trinity Solar
 DESCRIPTION:Whatever you want.  All the text in this section is customizable.
 LOCATION:Put whatever you want here.
 END:VEVENT

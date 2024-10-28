@@ -1,5 +1,3 @@
-import QRCode from "react-qr-code";
-
 const GeneratedQRCode = ({ value }: { value: string }) => {
   return (
     <div style={{ background: "white", padding: "16px" }}>

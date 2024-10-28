@@ -106,7 +106,7 @@ END:VCALENDAR
         onChange={(date) => setSelectedDate(date)}
         showTimeSelect
         dateFormat="Pp"
-        className="border rounded-md p-2 mb-4"
+        className="border rounded-md p-2 mb-4 border-8 border-red-500"
       />
       <button
         onClick={handleGenerateQRCode}
@@ -116,13 +116,13 @@ END:VCALENDAR
       </button>
 
       {showQRCode && qrCodeValue && (
-        <div className="mt-6 flex flex-col items-center">
+        <div className="flex flex-col items-center bg-gray-100 mt-10">
           <div id="qr-code"> </div>
-          <p>Scan the QR code to add the event to your calendar.</p>
+          
           {/* <QRCode value={qrCodeValue} /> */}
           <svg
-            width={"300px"}
-            height={"300px"}
+            width={"20rem"}
+            height={"20rem"}
             xmlns="http://www.w3.org/2000/svg"
             viewBox={`0 0 ${65} ${65}`}
           >

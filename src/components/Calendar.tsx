@@ -2,12 +2,7 @@
 // components/Calendar.tsx
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-// import QRCode from 'react-qr-code'; // Use react-qr-code instead
 import "react-datepicker/dist/react-datepicker.css";
-// import QRCode from "./QRCode";
-
-// import { QrCode } from "@/third-party/qrcodegen/";
-// import * as QRCodeGen from "@/third-party/qrcodegen/index"
 import { qrcodegen } from "@/third-party/qrcodegen/index";
 
 // Returns a string of SVG code for an image depicting the given QR Code, with the given number
@@ -87,6 +82,8 @@ END:VCALENDAR
     return icsData;
   };
 
+
+  // this s/b replaced with MomentJS possible?
   const formatDateToICS = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -106,7 +103,7 @@ END:VCALENDAR
         onChange={(date) => setSelectedDate(date)}
         showTimeSelect
         dateFormat="Pp"
-        className="border rounded-md p-2 mb-4 border-8 border-red-500"
+        className="border rounded-md p-2 mb-4 border-8 border-black text-black"
       />
       <button
         onClick={handleGenerateQRCode}

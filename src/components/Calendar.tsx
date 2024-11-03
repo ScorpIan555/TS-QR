@@ -68,8 +68,8 @@ const Calendar: React.FC = () => {
 BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
-DTSTART:${startDate}
-DTEND:${endDate}
+DTSTART;TZID=America/New_York:${startDate}
+DTEND;TZID=America/New_York:${endDate}
 SUMMARY:No Obligation Consultation with Trinity Solar
 DESCRIPTION:Whatever you want.  All the text in this section is customizable.
 LOCATION:Put whatever you want here.
@@ -92,7 +92,7 @@ END:VCALENDAR
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = "00";
 
-    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+    return `${year}${month}${day}T${hours}${minutes}${seconds}`;
   };
 
   return (

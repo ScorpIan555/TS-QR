@@ -26,13 +26,12 @@ const Calendar: React.FC = () => {
 
       setQrCodeValue(calendarInvite);
       setShowQRCode(true);
-      console.log( calendarInvite);
+      console.log(calendarInvite);
 
       setQrCodeObjectValue(qrCode);
       return qrCode;
     }
   };
-
 
   const generateICSFile = (date: Date): string => {
     const startDate = formatDateToICS(date);
@@ -84,32 +83,6 @@ END:VCALENDAR
 
       {showQRCode && qrCodeValue && (
         <QRCodeComponent qrCodeObjectValue={qrCodeObjectValue} />
-        // <div className="flex flex-col items-center bg-gray-100 mt-10">
-        //   <div id="qr-code"> </div>
-          
-        //   {/* <QRCode value={qrCodeValue} /> */}
-        //   <svg
-        //     width={"20rem"}
-        //     height={"20rem"}
-        //     xmlns="http://www.w3.org/2000/svg"
-        //     viewBox={`0 0 ${65} ${65}`}
-        //   >
-        //     {qrCodeObjectValue?.modules.map((row: unknown[], rowIndex: number) =>
-        //       row.map((module, colIndex) =>
-        //         module ? (
-        //           <rect
-        //             key={`${rowIndex}-${colIndex}`}                  
-        //             x={(colIndex * 65) / qrCodeObjectValue?.size}
-        //             y={(rowIndex * 65) / qrCodeObjectValue?.size}
-        //             width={65 / qrCodeObjectValue?.size}
-        //             height={65 / qrCodeObjectValue?.size}
-        //             fill="black"
-        //           />
-        //         ) : null
-        //       )
-        //     )}
-        //   </svg>
-        // </div>
       )}
     </div>
   );
